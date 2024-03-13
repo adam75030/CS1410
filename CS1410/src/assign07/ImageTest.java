@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 /**
  * This class contains tests for the Image class.
  *
- * @author Drs. Kabir, Martin and ?
- * @version ?
+ * @author Drs. Kabir, Martin and Adam Wightman
+ * @version March 12, 2024
  */
 public class ImageTest {
 

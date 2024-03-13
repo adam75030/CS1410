@@ -1,5 +1,10 @@
 package assign07;
 
+/**
+ * This class represents a Pixel object, with individual red, green, and blue values.
+ * @author Adam Wightman
+ * @version March 12, 2024
+ */
 public class Pixel {
 	private int red;
 	private int green;
@@ -28,7 +33,7 @@ public class Pixel {
 	}
 
 	public int getPackedRGB() {
-
+		return this.red << 8 | this.green << 8 | this.blue << 8;
 	}
 
 }
