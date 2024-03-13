@@ -132,7 +132,11 @@ public class Image {
 	public void redBlueSwapFilter() {
 		for (int i = 0; i < imageArray.length; i++) {
 			for (int j = 0; j < imageArray[0].length; j++) {
-
+				int origRed = imageArray[i][j].getRedAmount();
+				int origGreen = imageArray[i][j].getGreenAmount();
+				int origBlue = imageArray[i][j].getBlueAmount();
+				Pixel swapRedBlue = new Pixel(origBlue, origGreen, origRed);
+				imageArray[i][j] = swapRedBlue;
 			}
 		}
 	}
@@ -150,7 +154,12 @@ public class Image {
 	public void blackAndWhiteFilter() {
 		for (int i = 0; i < imageArray.length; i++) {
 			for (int j = 0; j < imageArray[0].length; j++) {
-
+				int origRed = imageArray[i][j].getRedAmount();
+				int origGreen = imageArray[i][j].getGreenAmount();
+				int origBlue = imageArray[i][j].getBlueAmount();
+				int average = (origRed + origGreen + origBlue) / 3;
+				Pixel blackAndWhite = new Pixel(average, average, average);
+				imageArray[i][j] = blackAndWhite;
 			}
 		}
 	}
