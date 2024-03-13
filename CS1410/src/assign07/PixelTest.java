@@ -23,4 +23,11 @@ public class PixelTest {
 		Pixel black = new Pixel(0, 0, 0);
 		assertEquals(0, black.getPackedRGB());
 	}
+	
+	@Test
+	public void testGetPackedRGBSienna() {
+		Pixel sienna = new Pixel(160,82,45);
+		int packedSienna = sienna.getPackedRGB();  // should be 10506797
+		assertEquals(10506797, sienna.getPackedRGB());
+	}
 }
