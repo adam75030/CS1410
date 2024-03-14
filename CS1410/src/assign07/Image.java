@@ -177,13 +177,38 @@ public class Image {
 	 * 11.
 	 */
 	public void rotateClockwiseFilter() {
+		Pixel[][] rotatedImage = new Pixel[imageArray.length][imageArray.length];
+		
 		for (int i = 0; i < imageArray.length; i++) {
 			for (int j = 0; j < imageArray[0].length; j++) {
-
+				rotatedImage[i][j] = imageArray[i][imageArray.length - 1 - j];
 			}
 		}
 	}
-
+	
+	public static int[][] rotateLeft(int[][] arr) {
+		int size = arr.length; // {{1, 2, 3, 4}, {other inner array}, {third inner array}}
+		int[][] rotatedArray = new int[size][size];
+		
+		for(int row = 0; row < size; row++) {
+			for(int col = 0; col < size; col++) {
+				// Find the correct value of the rotated array
+				// at location row, col
+				rotatedArray[row][col] = arr[col][size - 1 - row];
+			}
+		}
+		return rotatedArray;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * FILL IN to describe your custom filter.
 	 */
