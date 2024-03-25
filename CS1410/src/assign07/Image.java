@@ -12,12 +12,6 @@ import javax.imageio.ImageIO;
  * obj.redBlueSwapFilter() followed by obj.rotateClockwiseFilter() results in an
  * image altered both in color and orientation.
  *
- * Note: - The pixel in the northwest corner of the image is stored in the first
- * row, first column. - The pixel in the northeast corner of the image is stored
- * in the first row, last column. - The pixel in the southeast corner of the
- * image is stored in the last row, last column. - The pixel in the southwest
- * corner of the image is stored in the last row, first column.
- *
  * @author Drs. Kabir, Martin and Adam Wightman
  * @version March 12, 2024
  */
@@ -27,8 +21,6 @@ public class Image {
 
 	/**
 	 * Creates a new Image object by reading the image file with the given filename.
-	 *
-	 * DO NOT MODIFY THIS METHOD
 	 *
 	 * @param filename - name of the given image file to read
 	 * @throws IOException if file does not exist or cannot be read
@@ -52,8 +44,7 @@ public class Image {
 	/**
 	 * Create an Image object directly from a pre-made Pixel array. This is
 	 * primarily to be used in testing.
-	 *
-	 * DO NOT MODIFY THIS METHOD
+	 * 
 	 */
 	public Image(Pixel[][] imageArray) {
 		this.imageArray = imageArray;
@@ -61,10 +52,8 @@ public class Image {
 
 	/**
 	 * Create a new "default" Image object, whose purpose is to be used in testing.
-	 *
 	 * The orientation of this image: cyan red green magenta yellow blue
 	 *
-	 * DO NOT MODIFY THIS METHOD
 	 */
 	public Image() {
 		imageArray = new Pixel[3][2];
@@ -78,8 +67,6 @@ public class Image {
 
 	/**
 	 * Gets the pixel at the specified row and column indexes.
-	 *
-	 * DO NOT MODIFY THIS METHOD
 	 *
 	 * @param rowIndex    - given row index
 	 * @param columnIndex - given column index
@@ -99,8 +86,6 @@ public class Image {
 	/**
 	 * Writes the image represented by this object to file. Does nothing if the
 	 * image length is 0.
-	 *
-	 * DO NOT MODIFY THIS METHOD
 	 *
 	 * @param filename - name of image file to write
 	 * @throws IOException if file does cannot be written
@@ -125,9 +110,6 @@ public class Image {
 	/**
 	 * Applies a filter to the image represented by this object such that for each
 	 * pixel the red amount and blue amount are swapped.
-	 *
-	 * HINT: Since the Pixel class does not include setter methods for its private
-	 * instance variables, create new Pixel objects with the altered colors.
 	 */
 	public void redBlueSwapFilter() {
 		for (int i = 0; i < imageArray.length; i++) {
@@ -144,12 +126,7 @@ public class Image {
 	/**
 	 * Applies a filter to the image represented by this object such that the color
 	 * of each pixel is converted to its corresponding grayscale shade, producing
-	 * the effect of a black and white photo. The filter sets the amount of red,
-	 * green, and blue all to the value of this average: (originalRed +
-	 * originalGreen + originalBlue) / 3
-	 *
-	 * HINT: Since the Pixel class does not include setter methods for its private
-	 * instance variables, create new Pixel objects with the altered colors.
+	 * the effect of a black and white photo.
 	 */
 	public void blackAndWhiteFilter() {
 		for (int i = 0; i < imageArray.length; i++) {
@@ -166,56 +143,43 @@ public class Image {
 
 	/**
 	 * Applies a filter to the image represented by this object such that it is
-	 * rotated clockwise (by 90 degrees). This filter rotates directly clockwise, it
-	 * should not do this by rotating counterclockwise 3 times.
-	 *
-	 * HINT: If the image is not square, this filter requires creating a new array
-	 * with different lengths. Use the technique of creating and reassigning a new
-	 * backing array from BetterDynamicArray (assign06) as a guide for how to make a
-	 * second array and eventually reset the imageArray reference to this new array.
-	 * Note that we learned how to rotate a square 2D array *left* in Class Meeting
-	 * 11.
+	 * rotated clockwise (by 90 degrees).
 	 */
 	public void rotateClockwiseFilter() {
-		Pixel[][] rotatedImage = new Pixel[imageArray.length][imageArray.length];
-		
-		for (int i = 0; i < imageArray.length; i++) {
-			for (int j = 0; j < imageArray[0].length; j++) {
-				rotatedImage[i][j] = imageArray[i][imageArray.length - 1 - j];
+		Pixel[][] rotatedImage = new Pixel[imageArray[0].length][imageArray.length];
+		for (int j = 0; j < imageArray[0].length; j++) {
+			for (int i = 0; i < imageArray.length; i++) {
+				rotatedImage[j][i] = imageArray[imageArray.length - 1 - i][j];
 			}
 		}
+		imageArray = rotatedImage;
 	}
-	
-	public static int[][] rotateLeft(int[][] arr) {
-		int size = arr.length; // {{1, 2, 3, 4}, {other inner array}, {third inner array}}
-		int[][] rotatedArray = new int[size][size];
-		
-		for(int row = 0; row < size; row++) {
-			for(int col = 0; col < size; col++) {
-				// Find the correct value of the rotated array
-				// at location row, col
-				rotatedArray[row][col] = arr[col][size - 1 - row];
-			}
-		}
-		return rotatedArray;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/**
-	 * FILL IN to describe your custom filter.
-	 */
-	public void customFilter() {
-		for (int i = 0; i < imageArray.length; i++) {
-			for (int j = 0; j < imageArray[0].length; j++) {
 
+	/**
+	 * Applies a filter to the image represented by this object such that the color
+	 * of each pixel is increased and the image is "brightened". The brightness
+	 * cannot exceed 255.
+	 */
+	public void brightenFilter() {
+		for (int i = 0; i < imageArray.length; i++) {
+			for (int j = 0; j < imageArray[0].length; j++) {
+				int origRed = imageArray[i][j].getRedAmount();
+				int origGreen = imageArray[i][j].getGreenAmount();
+				int origBlue = imageArray[i][j].getBlueAmount();
+				int brightenedRed = origRed + 20;
+				int brightenedGreen = origGreen + 20;
+				int brightenedBlue = origBlue + 20;
+				if (brightenedRed > 255) {
+					brightenedRed = 255;
+				}
+				if (brightenedGreen > 255) {
+					brightenedGreen = 255;
+				}
+				if (brightenedBlue > 255) {
+					brightenedBlue = 255;
+				}
+				Pixel brightened = new Pixel(brightenedRed, brightenedGreen, brightenedBlue);
+				imageArray[i][j] = brightened;
 			}
 		}
 	}
