@@ -11,9 +11,15 @@ public class Tool extends Item {
 	@Override
 	public int compareTo(Item other) {
 		if (other instanceof Tool) {
-			return this.power > other.power;
-			
+			if (this.power > ((Tool) other).power) {
+				return 1;
+			} else if (this.power < ((Tool) other).power) {
+				return -1;
+			} else {
+				return 0;
+			}
 		}
+		return 1;
 	}
 
 	@Override

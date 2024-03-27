@@ -7,10 +7,22 @@ public class Upgrade extends Item {
 		super("Upgrade");
 		this.isUsed = false;
 	}
-	
+
 	@Override
-	public int compareTo(Item o) {
-		// TODO Auto-generated method stub
+	public int compareTo(Item other) {
+		if (other instanceof Upgrade) {
+			if (this.isUsed) {
+				return 1;
+			} else {
+				return 0;
+			}
+		} else if (other instanceof Tool) {
+			return -1;
+		} else if (other instanceof Armor) {
+			return -1;
+		} else if (other instanceof Magic) {
+			return -1;
+		}
 		return 0;
 	}
 
@@ -25,9 +37,9 @@ public class Upgrade extends Item {
 	@Override
 	public void useUpgrade() {
 		this.isUsed = true;
-		
+
 	}
-	
+
 	public boolean isUsed() {
 		return isUsed;
 	}

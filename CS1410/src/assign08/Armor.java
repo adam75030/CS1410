@@ -9,10 +9,20 @@ public class Armor extends Item {
 	}
 
 	@Override
-	public int compareTo(Item o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public int compareTo(Item other) {
+		if (other instanceof Armor) {
+			if (this.defense > ((Armor) other).defense) {
+				return 1;
+			} else if (this.defense < ((Armor) other).defense) {
+				return -1;
+			} else {
+				return 0;
+			}
+		} else if (other instanceof Tool) {
+			return -1;
+		}
+		return 1;
+	} 
 
 	@Override
 	public String getDescription() {
