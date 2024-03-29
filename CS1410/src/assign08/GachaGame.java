@@ -18,37 +18,42 @@ import java.util.Scanner;
  * resulting set of best items.
  * 
  * @author Eric Heisler, Prof. Parker, Prof. Martin, and Adam Wightman
- * @version March 16, 2024
+ * @version March 29, 2024
  */
 public class GachaGame {
-	/////////////////////////////////////////////////////
-	// Complete and document these two methods.
-	/////////////////////////////////////////////////////
+	/**
+	 * Returns an array of new Item objects, with the length specified by the
+	 * parameter.
+	 * 
+	 * @param howMany - how many items to return in the array
+	 * @return Item[] array - an array of item objects
+	 */
 	public static Item[] getNewItems(int howMany) {
 		Item[] newItems = new Item[howMany];
 		for (int i = 0; i < newItems.length; i++) {
 			newItems[i] = getRandomItem();
 		}
 		return newItems;
-
 	}
 
+	/**
+	 * Returns a random item using a random generator to choose between 4
+	 * subclasses.
+	 * 
+	 * @return Item - a random item from one of the 4 subclasses
+	 */
 	public static Item getRandomItem() {
 		Random randomGenerator = new Random();
 		int classNumber = randomGenerator.nextInt(0, 4);
-		int randomStatsNumber = randomGenerator.nextInt(1, 100000);
+		int randomStatsNumber = randomGenerator.nextInt(1, 100);
 		if (classNumber == 0) {
-			Tool tool = new Tool(makeItemName(classNumber, randomGenerator), randomStatsNumber);
-			return tool;
+			return new Tool(makeItemName(classNumber, randomGenerator), randomStatsNumber);
 		} else if (classNumber == 1) {
-			Armor armor = new Armor(makeItemName(classNumber, randomGenerator), randomStatsNumber);
-			return armor;
+			return new Armor(makeItemName(classNumber, randomGenerator), randomStatsNumber);
 		} else if (classNumber == 2) {
-			Magic magic = new Magic(makeItemName(classNumber, randomGenerator), randomStatsNumber, randomStatsNumber);
-			return magic;
+			return new Magic(makeItemName(classNumber, randomGenerator), randomStatsNumber, randomStatsNumber);
 		} else {
-			Upgrade upgrade = new Upgrade();
-			return upgrade;
+			return new Upgrade();
 		}
 	}
 
