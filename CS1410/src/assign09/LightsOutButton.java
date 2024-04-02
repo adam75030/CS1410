@@ -1,5 +1,7 @@
 package assign09;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 /**
@@ -33,10 +35,14 @@ public class LightsOutButton extends JButton {
 	 * was on.
 	 */
 	void toggle() {
+		Icon lightOn = new ImageIcon("light_on-1(1).jpg");
+		Icon lightOff = new ImageIcon("light_off(1).jpg");
 		if (isOn) {
 			this.isOn = false;
+			this.setIcon(lightOff);
 		} else {
 			this.isOn = true;
+			this.setIcon(lightOn);
 		}
 	}
 

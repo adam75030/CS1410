@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -38,16 +39,16 @@ public class LightsOutFrame extends JFrame implements ActionListener {
 		lightsPanel.setLayout(new GridLayout(5, 5));
 
 		gridLights = new LightsOutButton[5][5];
-		
-		Icon lightOn = new ImageIcon("light_on-1(1).jpg");
 		Icon lightOff = new ImageIcon("light_off(1).jpg");
+		Icon lightOn = new ImageIcon("light_on-1(1).jpg");
+
 
 		// Add new LightsOutButtons to the lightsPanel
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++) {
 				LightsOutButton button = new LightsOutButton(i, j);
-				button.setIcon(lightOn);
 				lightsPanel.add(button);
+				button.setIcon(lightOn);
 				button.addActionListener(this);
 				gridLights[i][j] = button;
 			}
@@ -84,33 +85,11 @@ public class LightsOutFrame extends JFrame implements ActionListener {
 	void randomize() {
 		Random random = new Random();
 		// Repeat 9 times
-		for (int count = 0; count < 9; count++) {
-			// Create a random number within the grid
-			int randomX = random.nextInt(0, 5);
-			int randomY = random.nextInt(0, 5);
-			// Access each light
-			for (int i = 0; i < gridLights.length; i++) {
-				for (int j = 0; j < gridLights[0].length; j++) {
-					// Center
-					gridLights[randomX][randomY].toggle();
-					// North
-					if (gridLights[randomX][randomY].getRow() != 0) {
-						gridLights[randomX - 1][randomY].toggle();
-					}
-					// South
-					if (gridLights[randomX][randomY].getRow() != gridLights[0].length - 1) {
-						gridLights[randomX + 1][randomY].toggle();
-					}
-					// East
-					if (gridLights[randomX][randomY].getColumn() != gridLights.length - 1) {
-						gridLights[randomX][randomY + 1].toggle();
-					}
-					// West
-					if (gridLights[randomX][randomY].getColumn() != 0) {
-						gridLights[randomX][randomY - 1].toggle();
-					}
-				}
-			}
+		for (int i = 0; i < 9; i++) {
+			// Use toggleLight and select a random row and column index
+			int row = random.nextInt(5);
+			int column = random.nextInt(5);
+			toggleLight(row, column);
 		}
 	}
 
@@ -162,15 +141,47 @@ public class LightsOutFrame extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// If the source of the event is a LightsOutButton and the puzzle is in manual
-		// setup mode, toggle the light of that individual button.
-		LightsOutButton button = (LightsOutButton) e.getSource();
-		if (inManualSetupMode) {
-			button.toggle();
+		// Get the source of the button click
+		Object button = (Object) e.getSource();
+		// Manual Mode LightsOutButton click
+		if (button instanceof LightsOutButton && inManualSetupMode) {
+			int row = ((LightsOutButton) button).getRow();
+			int column = ((LightsOutButton) button).getColumn();
+			gridLights[row][column].toggle();
+			// Regular game mode LightsOutButton click
+		} else if (button instanceof LightsOutButton && !inManualSetupMode) {
+			int row = ((LightsOutButton) button).getRow();
+			int column = ((LightsOutButton) button).getColumn();
+			toggleLight(row, column);
+			//win();
+			// Randomize button click
+		} else if (button instanceof JButton && ((JButton) button).equals(randomizeButton)) {
+			randomize();
+			// Manual Setup button click
+		} else if (button instanceof JButton && ((JButton) button).equals(manualSetupButton) && inManualSetupMode) {
+			manualSetupButton.setText("Enter Manual Setup");
+			this.inManualSetupMode = false;
+			win();
+			// Manual Setup button click
+		} else if (button instanceof JButton && ((JButton) button).equals(manualSetupButton) && !inManualSetupMode) {
+			manualSetupButton.setText("Exit Manual Setup");
+			this.inManualSetupMode = true;
+			win();
 		}
-		if (!inManualSetupMode) {
-			toggleLight(button.getRow(), button.getColumn());
+	}
+
+	void win() {
+		for (int i = 0; i < gridLights.length; i++) {
+			for (int j = 0; j < gridLights[0].length; i++) {
+				if (gridLights[i][j].isOn()) {
+					return;
+				}
+			}
 		}
+		JOptionPane.showMessageDialog(this, "You Win!");
+		this.setSize(350, 350);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
 	}
 
 	private static final long serialVersionUID = 1L;
