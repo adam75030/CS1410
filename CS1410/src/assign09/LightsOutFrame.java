@@ -80,6 +80,9 @@ public class LightsOutFrame extends JFrame implements ActionListener {
 		this.randomize();
 	}
 
+	/**
+	 * Randomizes the grid of lights by calling the toggleLight function 9 times
+	 */
 	void randomize() {
 		Random random = new Random();
 		// Repeat 9 times
@@ -109,6 +112,13 @@ public class LightsOutFrame extends JFrame implements ActionListener {
 		return false;
 	}
 
+	/**
+	 * Toggles the light at the given row and column index, as well as the 4
+	 * neighbors of that light.
+	 * 
+	 * @param row    - the row index of the light
+	 * @param column - the column index of the light
+	 */
 	void toggleLight(int row, int column) {
 		if (row > 4 || row < 0 || column > 4 || column < 0) {
 			throw new IndexOutOfBoundsException();
@@ -133,35 +143,50 @@ public class LightsOutFrame extends JFrame implements ActionListener {
 		}
 	}
 
+	/**
+	 * Controls all the button presses for the LightsOut game. Gets the source of
+	 * the button click, and calls methods depending on the type of button that was
+	 * clicked.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Get the source of the button click
 		Object button = (Object) e.getSource();
+
 		// Manual Mode LightsOutButton click
 		if (button instanceof LightsOutButton && inManualSetupMode) {
 			int row = ((LightsOutButton) button).getRow();
 			int column = ((LightsOutButton) button).getColumn();
 			gridLights[row][column].toggle();
+
 			// Regular game mode LightsOutButton click
 		} else if (button instanceof LightsOutButton && !inManualSetupMode) {
 			int row = ((LightsOutButton) button).getRow();
 			int column = ((LightsOutButton) button).getColumn();
 			toggleLight(row, column);
+			// Call the win function if all lights are out
 			win();
+
 			// Randomize button click
 		} else if (button instanceof JButton && ((JButton) button).equals(randomizeButton)) {
 			randomize();
-			// Manual Setup button click
+
+			// Manual Setup button click (when manual mode is already active)
 		} else if (button instanceof JButton && ((JButton) button).equals(manualSetupButton) && inManualSetupMode) {
 			manualSetupButton.setText("Enter Manual Setup");
 			this.inManualSetupMode = false;
-			// Manual Setup button click
+
+			// Manual Setup button click (when manual mode is inactive)
 		} else if (button instanceof JButton && ((JButton) button).equals(manualSetupButton) && !inManualSetupMode) {
 			manualSetupButton.setText("Exit Manual Setup");
 			this.inManualSetupMode = true;
 		}
 	}
 
+	/**
+	 * Helper function to determine when the game is won. The game is won if all
+	 * lights are off. Displays a win pop-up message.
+	 */
 	void win() {
 		for (int i = 0; i < gridLights.length; i++) {
 			for (int j = 0; j < gridLights[0].length; j++) {
@@ -175,6 +200,24 @@ public class LightsOutFrame extends JFrame implements ActionListener {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		System.exit(ABORT);
+	}
+
+	/**
+	 * Getter method to return the manual setup boolean, for testing.
+	 * 
+	 * @return inManualSetupMode boolean
+	 */
+	public boolean getManualSetupMode() {
+		return this.inManualSetupMode;
+	}
+
+	/**
+	 * Getter method to return the manual setup button, for testing.
+	 * 
+	 * @return manualSetupButton JButton
+	 */
+	public JButton getManualSetupButton() {
+		return this.manualSetupButton;
 	}
 
 	private static final long serialVersionUID = 1L;

@@ -31,8 +31,8 @@ public class LightsOutButton extends JButton {
 	}
 
 	/**
-	 * This method turns the light on if it was off, and turns the light off if it
-	 * was on.
+	 * This method turns the light on if it was off, turns the light off if it was
+	 * on, and changes the icon of the button.
 	 */
 	void toggle() {
 		Icon lightOn = new ImageIcon("light_on-1(1).jpg");
@@ -52,6 +52,9 @@ public class LightsOutButton extends JButton {
 	 * @return row - the row index of the button
 	 */
 	public int getRow() {
+		if (this.row > 4 || this.row < 0) {
+			throw new IndexOutOfBoundsException();
+		}
 		return this.row;
 	}
 
@@ -61,6 +64,9 @@ public class LightsOutButton extends JButton {
 	 * @return column - the column index of the button
 	 */
 	public int getColumn() {
+		if (this.column > 4 || this.column < 0) {
+			throw new IndexOutOfBoundsException();
+		}
 		return this.column;
 	}
 
