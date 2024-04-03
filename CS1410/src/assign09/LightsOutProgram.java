@@ -6,5 +6,4 @@ public class LightsOutProgram {
 		LightsOutFrame frame = new LightsOutFrame();
 		frame.setVisible(true);
 	}
-
 }

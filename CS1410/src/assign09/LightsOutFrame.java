@@ -40,15 +40,13 @@ public class LightsOutFrame extends JFrame implements ActionListener {
 
 		gridLights = new LightsOutButton[5][5];
 		Icon lightOff = new ImageIcon("light_off(1).jpg");
-		Icon lightOn = new ImageIcon("light_on-1(1).jpg");
-
 
 		// Add new LightsOutButtons to the lightsPanel
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++) {
 				LightsOutButton button = new LightsOutButton(i, j);
 				lightsPanel.add(button);
-				button.setIcon(lightOn);
+				button.setIcon(lightOff);
 				button.addActionListener(this);
 				gridLights[i][j] = button;
 			}
@@ -102,7 +100,7 @@ public class LightsOutFrame extends JFrame implements ActionListener {
 	 * @return true if the light is on
 	 */
 	boolean lightIsOn(int row, int column) {
-		if (row > 5 || row < 0 || column > 5 || column < 0) {
+		if (row > 4 || row < 0 || column > 4 || column < 0) {
 			throw new IndexOutOfBoundsException();
 		}
 		if (gridLights[row][column].isOn()) {
@@ -112,30 +110,26 @@ public class LightsOutFrame extends JFrame implements ActionListener {
 	}
 
 	void toggleLight(int row, int column) {
-		if (row > 5 || row < 0 || column > 5 || column < 0) {
+		if (row > 4 || row < 0 || column > 4 || column < 0) {
 			throw new IndexOutOfBoundsException();
 		}
-		for (int i = 0; i < gridLights.length; i++) {
-			for (int j = 0; j < gridLights[0].length; j++) {
-				// Center
-				gridLights[row][column].toggle();
-				// North
-				if (gridLights[row][column].getRow() != 0) {
-					gridLights[row - 1][column].toggle();
-				}
-				// South
-				if (gridLights[row][column].getRow() != gridLights[0].length - 1) {
-					gridLights[row + 1][column].toggle();
-				}
-				// East
-				if (gridLights[row][column].getColumn() != gridLights.length - 1) {
-					gridLights[row][column + 1].toggle();
-				}
-				// West
-				if (gridLights[row][column].getColumn() != 0) {
-					gridLights[row][column - 1].toggle();
-				}
-			}
+		// Center
+		gridLights[row][column].toggle();
+		// North
+		if (gridLights[row][column].getRow() != 0) {
+			gridLights[row - 1][column].toggle();
+		}
+		// South
+		if (gridLights[row][column].getRow() != gridLights[0].length - 1) {
+			gridLights[row + 1][column].toggle();
+		}
+		// East
+		if (gridLights[row][column].getColumn() != gridLights.length - 1) {
+			gridLights[row][column + 1].toggle();
+		}
+		// West
+		if (gridLights[row][column].getColumn() != 0) {
+			gridLights[row][column - 1].toggle();
 		}
 	}
 
@@ -153,7 +147,7 @@ public class LightsOutFrame extends JFrame implements ActionListener {
 			int row = ((LightsOutButton) button).getRow();
 			int column = ((LightsOutButton) button).getColumn();
 			toggleLight(row, column);
-			//win();
+			win();
 			// Randomize button click
 		} else if (button instanceof JButton && ((JButton) button).equals(randomizeButton)) {
 			randomize();
@@ -161,18 +155,16 @@ public class LightsOutFrame extends JFrame implements ActionListener {
 		} else if (button instanceof JButton && ((JButton) button).equals(manualSetupButton) && inManualSetupMode) {
 			manualSetupButton.setText("Enter Manual Setup");
 			this.inManualSetupMode = false;
-			win();
 			// Manual Setup button click
 		} else if (button instanceof JButton && ((JButton) button).equals(manualSetupButton) && !inManualSetupMode) {
 			manualSetupButton.setText("Exit Manual Setup");
 			this.inManualSetupMode = true;
-			win();
 		}
 	}
 
 	void win() {
 		for (int i = 0; i < gridLights.length; i++) {
-			for (int j = 0; j < gridLights[0].length; i++) {
+			for (int j = 0; j < gridLights[0].length; j++) {
 				if (gridLights[i][j].isOn()) {
 					return;
 				}
@@ -182,6 +174,7 @@ public class LightsOutFrame extends JFrame implements ActionListener {
 		this.setSize(350, 350);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
+		System.exit(ABORT);
 	}
 
 	private static final long serialVersionUID = 1L;
