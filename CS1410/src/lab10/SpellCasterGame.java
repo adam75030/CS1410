@@ -30,9 +30,9 @@ public class SpellCasterGame {
 		// contestants.add(CONSTRUCT A NEW SPELL CASTER);
 		
 		// For TAs:
-		contestants.add(new Warrior());
-		contestants.add(new Healer());
-		contestants.add(new Wizard());
+//		contestants.add(new Warrior());
+//		contestants.add(new Healer());
+//		contestants.add(new Wizard());
 
 		
 		
